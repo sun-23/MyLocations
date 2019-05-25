@@ -51,6 +51,19 @@ class CurrentLocationViewController: UIViewController ,CLLocationManagerDelegate
         updateLabels()
     }
     
+    // Go to TagLocation scene but navigationbar is hidden
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+    
+    // show navigationbar in TagLocation Scene
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = false
+    }
+    
+    // alert
     func showLocationServicesDeniedAlert()  {
         let alert = UIAlertController(title: "Location Services Disabled", message: "Please enable location services for this app in Settings.", preferredStyle: .alert)
         
@@ -98,6 +111,7 @@ class CurrentLocationViewController: UIViewController ,CLLocationManagerDelegate
         
     }
     
+    // get Location
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let newLocation = locations.last!
         print("didUpdateLocations \(newLocation)")
@@ -228,6 +242,7 @@ class CurrentLocationViewController: UIViewController ,CLLocationManagerDelegate
         return line1 + "\n" + line2
     }
     
+    
     func startLocationManager() {
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
@@ -235,6 +250,7 @@ class CurrentLocationViewController: UIViewController ,CLLocationManagerDelegate
             locationManager.startUpdatingLocation()
             updatingLocation = true
             
+            // is timer searching over 60sec do didTimeOut
             timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(didTimeOut), userInfo: nil, repeats: false)
         }
     }
